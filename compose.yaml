@@ -8,10 +8,24 @@ services:
     volumes:
       - ./:/app
     environment:
+      # Variables para Sequelize (database.js)
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: secret
+      DB_NAME: lab
+      # Variables legacy (por compatibilidad)
       MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASSWORD: secret
       MYSQL_DB: lab
+      # JWT
+      JWT_SECRET: super-secret-jwt-key-change-in-production
+      JWT_EXPIRES: 24h
+      # Puerto
+      PORT: 3000
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: mysql:8.0
@@ -20,6 +34,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: lab
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-psecret"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
 
 volumes:
   mysql_data:

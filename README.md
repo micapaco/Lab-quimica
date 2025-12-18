@@ -81,11 +81,11 @@ npm start
 Crear un archivo `.env` en la raíz del proyecto:
 
 ```env
-# Base de datos
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=secret
-MYSQL_DB=lab
+# Base de datos (para instalación local)
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=secret
+DB_NAME=lab
 
 # JWT
 JWT_SECRET=tu-secreto-super-seguro-aqui
@@ -94,6 +94,8 @@ JWT_EXPIRES=24h
 # Servidor
 PORT=3000
 ```
+
+**Nota:** Si usas Docker Compose, **no necesitas crear** el archivo `.env` ya que las variables están definidas en `compose.yaml`.
 
 ### Inicialización de Base de Datos
 
@@ -523,11 +525,18 @@ docker-compose logs mysql
 
 Verificar variables de entorno en `.env` o `compose.yaml`:
 ```env
-MYSQL_HOST=mysql  # Para Docker: "mysql", para local: "localhost"
-MYSQL_USER=root
-MYSQL_PASSWORD=secret
-MYSQL_DB=lab
+# Variables requeridas por Sequelize
+DB_HOST=mysql        # Para Docker: "mysql", para local: "localhost"
+DB_USER=root
+DB_PASSWORD=secret
+DB_NAME=lab
+
+# Variables JWT
+JWT_SECRET=tu-secreto-super-seguro
+JWT_EXPIRES=24h
 ```
+
+**Nota importante:** El `compose.yaml` ya ha sido actualizado con todas las variables necesarias y un healthcheck para MySQL. Si editaste manualmente el archivo, asegúrate de tener la versión más reciente del repositorio.
 
 ### WebSockets no conectan
 
